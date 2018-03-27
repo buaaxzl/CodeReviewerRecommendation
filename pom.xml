@@ -1,0 +1,126 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>cn.edu.buaa.act</groupId>
+  <artifactId>GithubData</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+   <dependencies>
+
+		<dependency>
+		  <groupId>org.eclipse.mylyn.github</groupId>
+		  <artifactId>org.eclipse.egit.github.core</artifactId>
+		  <version>2.1.5</version>
+		</dependency> 
+<!--  
+		<dependency>
+    		<groupId>com.jcabi</groupId>
+   			<artifactId>jcabi-github</artifactId>
+    		<version>0.28</version>
+		</dependency>
+-->	
+		<dependency>
+		    <groupId>org.gephi</groupId>
+		    <artifactId>gephi-toolkit</artifactId>
+		    <version>0.9.1</version>
+		</dependency>
+		
+	    <dependency>
+	        <groupId>org.neo4j.driver</groupId>
+	        <artifactId>neo4j-java-driver</artifactId>
+	        <version>1.1.0</version>
+	    </dependency>
+	    
+	    <dependency>
+		    <groupId>org.neo4j</groupId>
+		    <artifactId>neo4j-enterprise</artifactId>
+		    <version>3.0.6</version>
+		</dependency>
+   		
+	    <dependency>
+	        <groupId>org.mongodb</groupId>
+	        <artifactId>mongodb-driver</artifactId>
+	        <version>3.2.2</version>
+	    </dependency>
+	    
+		<dependency>
+		    <groupId>au.com.bytecode</groupId>
+		    <artifactId>opencsv</artifactId>
+		    <version>2.4</version>
+		</dependency>
+		
+	    <dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.23</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/nz.ac.waikato.cms.weka/weka-stable -->
+		<dependency>
+		    <groupId>nz.ac.waikato.cms.weka</groupId>
+		    <artifactId>weka-stable</artifactId>
+		    <version>3.8.1</version>
+		</dependency>
+
+	   <dependency>
+		   <groupId>org.apache.maven.plugins</groupId>
+		   <artifactId>maven-shade-plugin</artifactId>
+		   <version>3.0.0</version>
+	   </dependency>
+
+	   <dependency>
+		   <groupId>cn.edu.buaa.act</groupId>  <!--自定义-->
+		   <artifactId>wvtool</artifactId>    <!--自定义-->
+		   <version>1.0</version> <!--自定义-->
+		   <scope>system</scope> <!--system，类似provided，需要显式提供依赖的jar以后，Maven就不会在Repository中查找它-->
+		   <systemPath>${basedir}/lib/wvtool.jar</systemPath> <!--项目根目录下的lib文件夹下-->
+	   </dependency>
+
+   </dependencies>
+  
+  <build>
+      <plugins>
+
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-compiler-plugin</artifactId>
+              <configuration>
+                  <source>1.8</source>
+                  <target>1.8</target>
+				  <encoding>UTF-8</encoding>
+              </configuration>
+          </plugin>
+
+		  <plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-shade-plugin</artifactId>
+			  <version>3.0.0</version>
+			  <executions>
+				  <execution>
+					  <phase>package</phase>
+					  <goals>
+						  <goal>shade</goal>
+					  </goals>
+					  <configuration>
+						  <filters>
+							  <filter>
+								  <artifact>*:*</artifact>
+								  <excludes>
+									  <exclude>META-INF/*.SF</exclude>
+									  <exclude>META-INF/*.DSA</exclude>
+									  <exclude>META-INF/*.RSA</exclude>
+								  </excludes>
+							  </filter>
+						  </filters>
+						  <transformers>
+							  <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+								  <mainClass>ExtractReviewData.GitHubAPICrawler</mainClass>
+							  </transformer>
+						  </transformers>
+					  </configuration>
+				  </execution>
+			  </executions>
+		  </plugin>
+
+      </plugins>
+  </build>
+</project>
